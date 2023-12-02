@@ -13,14 +13,18 @@ POST http://localhost:1234/api/movies
 Content-Type: application/json
 
 {
-  "sql": "SELECT * FROM users",
-  "title": "The Godfather",
-  "year": 1975,
-  "director": "Francis Ford Coppola",
-  "duration": 175,
-  "poster": "https://img.fruugo.com/product/4/49/14441494_max.jpg",
-  "genre": [
-    "Crime",
-    "Drama"
-  ]
+  "title": "Napoleon",
+  "year": 2023,
+  "director": "SkivaDev",
+  "duration": 156,
+  "poster": "https://i.ebayimg.com/images/g/QFQAAOSwAQpfjaA6/s-l1200.jpg",
+  "genre": ["Action", "Sci-Fi"],
+}
+
+### Actualizar una pelicula
+PATCH http://localhost:1234/api/movies/9e6106f0-848b-4810-a11a-3d832a5610f9
+Content-Type: application/json
+
+{
+  "title": "Fabrizio",
 }
