@@ -1,5 +1,6 @@
 {
     "conventionalCommits.scopes": [
-        "class-2"
+        "class-2",
+        "class-3"
     ]
 }

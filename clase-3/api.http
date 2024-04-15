@@ -18,7 +18,7 @@ Content-Type: application/json
   "director": "SkivaDev",
   "duration": 156,
   "poster": "https://i.ebayimg.com/images/g/QFQAAOSwAQpfjaA6/s-l1200.jpg",
-  "genre": ["Action", "Sci-Fi"],
+  "genre": ["Action", "Sci-Fi"]
 }
 
 ### Actualizar una pelicula
@@ -26,5 +26,5 @@ PATCH http://localhost:1234/api/movies/9e6106f0-848b-4810-a11a-3d832a5610f9
 Content-Type: application/json
 
 {
-  "title": "Fabrizio",
+  "title": "Fabrizio"
 }

@@ -67,10 +67,7 @@ app.get("/api/movies/:id", (req, res) => {
 
 app.post("/api/movies", (req, res) => {
   
-  const result = validateMovie({
-    "title" : "a",
-    "year": 2020
-  })
+  const result = validateMovie(req.body)
 
   if (!result.success) {
     // 422 Unprocessable Entity
