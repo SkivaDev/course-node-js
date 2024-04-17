@@ -7,33 +7,20 @@ import { validateMovie, validatePartialMovie } from "../schemas/movies.mjs";
 // const movies = JSON.parse(fs.readFileSync("./movies.json", "utf-8"))
 
 // COMO LEER UN JSON EN ESMODULES RECOMENDADO
-import  { createRequire } from "node:module";
+import { createRequire } from "node:module";
+import { MovieModel } from "../models/movie";
 const require = createRequire(import.meta.url);
 const movies = require("../movies.json");
 
 export const moviesRouter = Router();
 
-
 // Todos los recursos que sean MOVIES se identifican con /api/movies
-moviesRouter.get("/", (req, res) => {
+moviesRouter.get("/", async (req, res) => {
   const { title, genre } = req.query;
-  let filteredMovies = [...movies];
 
-  // // Filtrar por titulo
-  if (title) {
-    filteredMovies = filteredMovies.filter((movie) =>
-      movie.title.toLowerCase().includes(title.toLowerCase())
-    );
-  }
+  const movies = await MovieModel.getAll({ title, genre });
 
-  // Filtrar por genero
-  if (genre) {
-    filteredMovies = filteredMovies.filter((movie) =>
-      movie.genre.some((g) => g.toLowerCase() === genre.toLowerCase())
-    );
-  }
-
-  res.json(filteredMovies);
+  res.json(movies);
 });
 
 moviesRouter.get("/:id", (req, res) => {
