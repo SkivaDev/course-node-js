@@ -1,10 +1,21 @@
 import { Router } from "express";
+import { randomUUID } from "node:crypto";
+import { validateMovie, validatePartialMovie } from "../schemas/movies.mjs";
 
-const router = Router();
+// COMO LEER UN JSON EN ESMODULES
+// import fs from "node:fs"
+// const movies = JSON.parse(fs.readFileSync("./movies.json", "utf-8"))
+
+// COMO LEER UN JSON EN ESMODULES RECOMENDADO
+import  { createRequire } from "node:module";
+const require = createRequire(import.meta.url);
+const movies = require("../movies.json");
+
+export const moviesRouter = Router();
 
 
 // Todos los recursos que sean MOVIES se identifican con /api/movies
-app.get("/api/movies", (req, res) => {
+moviesRouter.get("/", (req, res) => {
   const { title, genre } = req.query;
   let filteredMovies = [...movies];
 
@@ -25,7 +36,7 @@ app.get("/api/movies", (req, res) => {
   res.json(filteredMovies);
 });
 
-app.get("/api/movies/:id", (req, res) => {
+moviesRouter.get("/:id", (req, res) => {
   const { id } = req.params;
   const movie = movies.find((movie) => movie.id == id);
   if (movie) {
@@ -35,7 +46,7 @@ app.get("/api/movies/:id", (req, res) => {
   }
 });
 
-app.post("/api/movies", (req, res) => {
+moviesRouter.post("/", (req, res) => {
   const result = validateMovie(req.body);
 
   if (!result.success) {
@@ -56,7 +67,7 @@ app.post("/api/movies", (req, res) => {
   res.status(201).json(newMovie);
 });
 
-app.patch("/api/movies/:id", (req, res) => {
+moviesRouter.patch("/:id", (req, res) => {
   const result = validatePartialMovie(req.body);
 
   if (!result.success) {
@@ -81,7 +92,7 @@ app.patch("/api/movies/:id", (req, res) => {
   res.json(updatedMovie);
 });
 
-app.delete("/api/movies/:id", (req, res) => {
+moviesRouter.delete("/:id", (req, res) => {
   const { id } = req.params;
   const movieIndex = movies.findIndex((movie) => movie.id == id);
 
