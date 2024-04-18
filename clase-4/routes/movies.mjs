@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { randomUUID } from "node:crypto";
 import { validateMovie, validatePartialMovie } from "../schemas/movies.mjs";
 
 // COMO LEER UN JSON EN ESMODULES
@@ -16,16 +15,17 @@ export const moviesRouter = Router();
 
 // Todos los recursos que sean MOVIES se identifican con /api/movies
 moviesRouter.get("/", async (req, res) => {
-  const { title, genre } = req.query;
-
-  const movies = await MovieModel.getAll({ title, genre });
-
-  res.json(movies);
+    const { title, genre } = req.query;
+    const movies = await MovieModel.getAll({ title, genre });
+    res.json(movies);
+    res.status(500).json({ message: "Internal server error" });
 });
 
-moviesRouter.get("/:id", (req, res) => {
+moviesRouter.get("/:id", async (req, res) => {
   const { id } = req.params;
-  const movie = movies.find((movie) => movie.id == id);
+
+  const movie = await MovieModel.getById({ id });
+
   if (movie) {
     res.json(movie);
   } else {
@@ -33,7 +33,7 @@ moviesRouter.get("/:id", (req, res) => {
   }
 });
 
-moviesRouter.post("/", (req, res) => {
+moviesRouter.post("/", async (req, res) => {
   const result = validateMovie(req.body);
 
   if (!result.success) {
@@ -41,20 +41,12 @@ moviesRouter.post("/", (req, res) => {
     return res.status(400).json({ error: JSON.parse(result.error.message) });
   }
 
-  // en base de datos
-  const newMovie = {
-    id: randomUUID(), // uuid v4
-    ...result.data,
-  };
-
-  // Esto no sería REST, porque estamos guardando
-  // el estado de la aplicación en memoria
-  movies.push(newMovie);
+  const newMovie = await MovieModel.create({ input: result.data });
 
   res.status(201).json(newMovie);
 });
 
-moviesRouter.patch("/:id", (req, res) => {
+moviesRouter.patch("/:id", async (req, res) => {
   const result = validatePartialMovie(req.body);
 
   if (!result.success) {
@@ -63,31 +55,23 @@ moviesRouter.patch("/:id", (req, res) => {
   }
 
   const { id } = req.params;
-  const movieIndex = movies.findIndex((movie) => movie.id == id);
+  const updatedMovie = await MovieModel.update({ id, input: result.data });
 
-  if (movieIndex === -1) {
-    return res.status(404).send("Movie not found");
+  if (!updatedMovie) {
+    return res.status(404).json({ message: "Movie not found" });
   }
-
-  const updatedMovie = {
-    ...movies[movieIndex],
-    ...result.data,
-  };
-
-  movies[movieIndex] = updatedMovie;
 
   res.json(updatedMovie);
 });
 
 moviesRouter.delete("/:id", (req, res) => {
   const { id } = req.params;
-  const movieIndex = movies.findIndex((movie) => movie.id == id);
 
-  if (movieIndex === -1) {
-    return res.status(404).send("Movie not found");
+  const result = MovieModel.delete({ id });
+
+  if (result === false) {
+    return res.status(404).json({ message: "Movie not found" });
   }
-
-  movies.splice(movieIndex, 1);
 
   res.status(204).json({ message: "Movie deleted" });
 });
