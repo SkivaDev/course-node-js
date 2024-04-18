@@ -22,7 +22,7 @@ export class MovieModel {
       );
     }
 
-    res.json(filteredMovies);
+    return filteredMovies;
   }
 
   static async getById({ id }) {
@@ -52,7 +52,6 @@ export class MovieModel {
   }
 
   static async update({ id, input }) {
-    const { id } = req.params;
     const movieIndex = movies.findIndex((movie) => movie.id == id);
   
     if (movieIndex === -1) return false;

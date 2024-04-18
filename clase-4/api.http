@@ -22,9 +22,12 @@ Content-Type: application/json
 }
 
 ### Actualizar una pelicula
-PATCH http://localhost:1234/api/movies/9e6106f0-848b-4810-a11a-3d832a5610f9
+PATCH http://localhost:1234/api/movies/30afc945-f59e-41ed-935a-cff3d0929a34
 Content-Type: application/json
 
 {
   "title": "Fabrizio"
 }
+
+### Eliminar una pelicula
+DELETE http://localhost:1234/api/movies/30afc945-f59e-41ed-935a-cff3d0929a34
