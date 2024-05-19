@@ -2,6 +2,7 @@
     "conventionalCommits.scopes": [
         "class-2",
         "class-3",
-        "class-4"
+        "class-4",
+        "class-6"
     ]
 }
