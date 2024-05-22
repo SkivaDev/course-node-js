@@ -18,8 +18,8 @@ io.on('connection', (socket) => {
     });
 
     socket.on('chat message', (data) => {
-        console.log('Message received: ' + data);
-        // io.emit('message: ' + data);
+        // console.log('Message received: ' + data);
+        io.emit('chat message', data);
     });
     
 
