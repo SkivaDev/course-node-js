@@ -10,9 +10,22 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
-io.on('connection', () => {
+io.on('connection', (socket) => {
     console.log('User connected');
+
+    socket.on('disconnect', () => {
+        console.log('User disconnected');
+    });
+
+    socket.on('chat message', (data) => {
+        console.log('Message received: ' + data);
+        // io.emit('message: ' + data);
+    });
+    
+
 });
+
+
 
 app.use(logger('dev'));
 

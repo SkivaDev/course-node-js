@@ -10,6 +10,17 @@
 
         const socket = io();
 
+        const form = document.getElementById('form');
+        const message = document.getElementById('message'); //input
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            if (message.value) {
+                socket.emit('chat message', message.value);
+                message.value = '';
+            }
+        });
+
         // const messages = document.getElementById('messages');
         // const form = document.getElementById('form');
         // const message = document.getElementById('message');
