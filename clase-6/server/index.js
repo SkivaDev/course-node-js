@@ -6,6 +6,8 @@ import { createClient } from '@libsql/client';
 import { Server } from 'socket.io';
 import { createServer } from 'node:http';
 
+dotenv.config();
+
 const port = process.env.PORT || 3000;
 
 const app = express();
@@ -17,6 +19,10 @@ const db = createClient({
     authToken: process.env.DB_TOKEN
 });
 
+await db.execute(`CREATE TABLE IF NOT EXISTS messages (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    content TEXT,
+)`)
 
 io.on('connection', (socket) => {
     console.log('User connected');
