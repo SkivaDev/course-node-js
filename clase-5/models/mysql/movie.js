@@ -9,10 +9,14 @@ const config = {
     port: 3306
 }
 
-const connection = mysql.createConnection(config);
+const connection = await mysql.createConnection(config);
 
 export class MovieModel {
     static async getAll({ genre }) {
+
+        const [movies] = await connection.query('select title, year, director, duration, poster, rate, BIN_TO_UUID(id) from movie;');
+
+        return movies;
 
     }
     static async getById({ id }) {
