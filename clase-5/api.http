@@ -2,7 +2,7 @@
 GET http://localhost:1234/api/movies
 
 ### Recuperar una pelicula por id
-GET http://localhost:1234/api/movies/9e6106f0-848b-4810-a11a-3d832a5610f9
+GET http://localhost:1234/api/movies/fb3327c5-1c81-11ef-ba55-50ebf6c4984e
 
 ### Recuperar una pelicula por un genero
 GET http://localhost:1234/api/movies?genre=action&title=avengers
@@ -22,12 +22,14 @@ Content-Type: application/json
 }
 
 ### Actualizar una pelicula
-PATCH http://localhost:1234/api/movies/30afc945-f59e-41ed-935a-cff3d0929a34
+PATCH http://localhost:1234/api/movies/90b1cbb6-1c82-11ef-ba55-50ebf6c4984e
 Content-Type: application/json
 
 {
-  "title": "Fabrizio"
+  "title": "Leonardo King Kong",
+  "year": 2024,
+  "genre": ["Horror"]
 }
 
 ### Eliminar una pelicula
-DELETE http://localhost:1234/api/movies/30afc945-f59e-41ed-935a-cff3d0929a34
+DELETE http://localhost:1234/api/movies/90b1c393-1c82-11ef-ba55-50ebf6c4984e
