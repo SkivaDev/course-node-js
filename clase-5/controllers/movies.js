@@ -1,33 +1,34 @@
-//MODELO local file system
-// import { MovieModel } from "../models/local-file-system/movie.js";
 
-//MODELO mysql
-import { MovieModel } from "../models/mysql/movie.js";
 
 import { validateMovie, validatePartialMovie } from "../schemas/movies.mjs";
 
 export class MovieController {
-  static async getAll(req, res) {
+
+  constructor({ MovieModel }) {
+    this.MovieModel = MovieModel;
+  }
+
+  getAll = async (req, res) => {
     const { title, genre } = req.query;
-    const movies = await MovieModel.getAll({ title, genre });
+    const movies = await this.MovieModel.getAll({ title, genre });
 
     // qué es lo que renderiza
     res.json(movies);
-  }
+  };
 
-  static async getById(req, res) {
+  getById = async (req, res) => {
     const { id } = req.params;
 
-    const movie = await MovieModel.getById({ id });
+    const movie = await this.MovieModel.getById({ id });
 
     if (movie) {
       res.json(movie);
     } else {
       res.status(404).send("Movie not found");
     }
-  }
+  };
 
-  static async create(req, res) {
+  create = async (req, res) => {
     const result = validateMovie(req.body);
 
     if (!result.success) {
@@ -35,12 +36,12 @@ export class MovieController {
       return res.status(400).json({ error: JSON.parse(result.error.message) });
     }
 
-    const newMovie = await MovieModel.create({ input: result.data });
+    const newMovie = await this.MovieModel.create({ input: result.data });
 
     res.status(201).json(newMovie);
-  }
+  };
 
-  static async update(req, res) {
+  update = async (req, res) => {
     const result = validatePartialMovie(req.body);
 
     if (!result.success) {
@@ -49,19 +50,19 @@ export class MovieController {
     }
 
     const { id } = req.params;
-    const updatedMovie = await MovieModel.update({ id, input: result.data });
+    const updatedMovie = await this.MovieModel.update({ id, input: result.data });
 
     if (!updatedMovie) {
       return res.status(404).json({ message: "Movie not found" });
     }
 
     res.json(updatedMovie);
-  }
+  };
 
-  static async delete(req, res) {
+    delete = async (req, res) => {
     const { id } = req.params;
 
-    const result = MovieModel.delete({ id });
+    const result = this.MovieModel.delete({ id });
 
     if (result === false) {
       return res.status(404).json({ message: "Movie not found" });
