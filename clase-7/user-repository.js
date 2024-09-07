@@ -1,5 +1,7 @@
+import crypto from 'node:crypto';
+
 import DBLocal from 'db-local';
-import crypto from 'crypto';
+import bcrypt from 'bcrypt';
 
 const { Schema } = new DBLocal( { path: './db' } );
 
@@ -21,7 +23,7 @@ const User = Schema('User', {
 
 class UserRepository {
 
-    static create = ({ username, password }) => {
+    static create = async ({ username, password }) => {
 
         //1. Validaciones de username
         if (typeof username !== 'string') {
@@ -45,13 +47,13 @@ class UserRepository {
         }
 
         //4. Crear usuario
-
         const id = crypto.randomUUID();
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = User.create({
             _id: id,
             username,
-            password
+            password: hashedPassword
         });
 
         newUser.save();

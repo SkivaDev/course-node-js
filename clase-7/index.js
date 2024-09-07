@@ -15,12 +15,12 @@ app.post('/login', (req, res) => {
     }
 );
 
-app.post('/register', (req, res) => {
+app.post('/register',async (req, res) => {
 
     const { username, password } = req.body;
 
     try {
-        const id = UserRepository.create({ username, password });
+        const id = await UserRepository.create({ username, password });
         res.send(`User created with id: ${id}`);
     } catch (error) {
         res.status(400).send(error.message);
