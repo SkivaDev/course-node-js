@@ -10,10 +10,23 @@ app.get("/", (req, res) => {
     }
 );
 
-app.post('/login', (req, res) => {
-    res.send('Login successful!');
+app.post('/login', async (req, res) => {
+
+    const { username, password } = req.body;
+
+    try {
+        // const token = UserRepository.login({ username, password });
+        // res.send(`Login successful! Token: ${token}`);
+
+        const user = await UserRepository.login({ username, password });
+
+        res.send({ user });
     }
-);
+    catch (error) {
+        res.status(400).send(error.message);
+    }
+
+});
 
 app.post('/register',async (req, res) => {
 
