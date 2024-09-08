@@ -1,5 +1,6 @@
 import express from "express";
-import { PORT } from "./config.js";
+import jwt from "jsonwebtoken";
+import { PORT, SECRET_JWT_KEY } from "./config.js";
 import UserRepository from "./user-repository.js";
 
 const app = express();
@@ -19,6 +20,9 @@ app.post('/login', async (req, res) => {
         // res.send(`Login successful! Token: ${token}`);
 
         const user = await UserRepository.login({ username, password });
+        const token = jwt.sign({ id: user._id, username: user.username }, SECRET_JWT_KEY, {
+            expiresIn: '1h'
+        });
 
         res.send({ user });
     }
