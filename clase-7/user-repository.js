@@ -58,8 +58,8 @@ class UserRepository {
 
     //3. Verificar si el usuario ya existe
     const user = User.findOne({ username });
-    if (user) {
-        throw new Error("User already exists");
+    if (!user) {
+      throw new Error("User not found");
     }
 
     //4. Verificar si la contraseña es correcta
