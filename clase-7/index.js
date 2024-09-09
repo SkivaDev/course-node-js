@@ -72,7 +72,9 @@ app.post("/register", async (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-  res.send("Logout successful!");
+  res
+    .clearCookie("access_token")
+    .json({ message: "User logged out" });
 });
 
 app.get("/protected", async (req, res) => {
